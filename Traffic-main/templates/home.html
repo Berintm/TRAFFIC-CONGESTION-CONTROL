@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard | AI Traffic System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #141E30, #243B55);
+            min-height: 100vh;
+            color: white;
+        }
+
+        /* Top Navigation */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(15px);
+        }
+
+        .navbar h2 {
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .logout-btn {
+            padding: 8px 20px;
+            border-radius: 25px;
+            background: #ff4b5c;
+            color: white;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #ff1e38;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            margin-top: 60px;
+            animation: fadeIn 1.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(30px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        .hero h1 {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            opacity: 0.85;
+        }
+
+        /* Cards Section */
+        .cards {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 60px;
+            padding: 0 40px 80px 40px;
+        }
+
+        .card {
+            width: 280px;
+            margin: 20px;
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: 0.4s;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            background: rgba(255,255,255,0.12);
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+            font-size: 20px;
+            color: #4facfe;
+        }
+
+        .card p {
+            font-size: 15px;
+            opacity: 0.85;
+            margin-bottom: 20px;
+        }
+
+        .card a {
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            background: linear-gradient(90deg, #00c6ff, #0072ff);
+            color: white;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .card a:hover {
+            transform: scale(1.05);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 28px; }
+            .cards { padding: 0 20px 50px 20px; }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="navbar">
+        <h2>🚦 AI Traffic Control Panel</h2>
+        <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+
+    <div class="hero">
+        <h1>Welcome to Intelligent Traffic Management System</h1>
+        <p>Predict congestion levels and dynamically simulate 4-Junction traffic signals using Machine Learning.</p>
+    </div>
+
+    <div class="cards">
+
+        <div class="card">
+            <h3>📝 Enter Traffic Data</h3>
+            <p>Input vehicle counts for 4 junctions and generate congestion predictions.</p>
+            <a href="/predict">Start Prediction</a>
+        </div>
+
+        <div class="card">
+            <h3>🚦 Live Simulation</h3>
+            <p>View real-time circular signal rotation with dynamic countdown timer.</p>
+            <a href="/simulation">View Simulation</a>
+        </div>
+
+        <div class="card">
+            <h3>🔄 Reset System</h3>
+            <p>Clear previous data and re-run prediction for new traffic conditions.</p>
+            <a href="/reset">Reset</a>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        © 2026 Intelligent AI Traffic Congestion Prediction System | Smart City Ready
+    </div>
+
+</body>
+</html>

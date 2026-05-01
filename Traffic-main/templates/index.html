@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Traffic Congestion Prediction System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #1f4037);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 60px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            color: white;
+            text-align: center;
+            animation: fadeIn 1.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .highlight {
+            background: linear-gradient(90deg, #00f2fe, #4facfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .buttons {
+            margin-bottom: 50px;
+        }
+
+        .btn {
+            padding: 14px 35px;
+            border-radius: 30px;
+            border: none;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.4s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #00c6ff, #0072ff);
+            color: white;
+            box-shadow: 0 5px 20px rgba(0,114,255,0.5);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,114,255,0.8);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid #4facfe;
+            color: #4facfe;
+        }
+
+        .btn-secondary:hover {
+            background: #4facfe;
+            color: white;
+        }
+
+        .features {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .feature-box {
+            flex: 1;
+            min-width: 250px;
+            margin: 15px;
+            padding: 25px;
+            border-radius: 15px;
+            background: rgba(255,255,255,0.05);
+            transition: 0.4s;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-10px);
+            background: rgba(255,255,255,0.1);
+        }
+
+        .feature-box h3 {
+            margin-bottom: 15px;
+            font-size: 20px;
+            color: #4facfe;
+        }
+
+        .footer {
+            margin-top: 40px;
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 32px; }
+            .container { padding: 30px; }
+            .features { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>
+        AI-Based <span class="highlight">Traffic Congestion Prediction</span>
+    </h1>
+
+    <p>
+        Smart 4-Junction Intelligent Traffic Signal Simulation System  
+        powered by Machine Learning & Dynamic Signal Optimization.
+    </p>
+
+    <div class="buttons">
+        <a href="/loginpage" class="btn btn-primary">Login to Dashboard</a>
+        <a href="#features" class="btn btn-secondary">Explore Features</a>
+    </div>
+
+    <div class="features" id="features">
+        <div class="feature-box">
+            <h3>🚦 4 Junction Smart Control</h3>
+            <p>Predicts congestion levels independently and prioritizes traffic dynamically.</p>
+        </div>
+
+        <div class="feature-box">
+            <h3>🧠 ML-Based Timing</h3>
+            <p>Signal timing automatically adjusts using trained XGBoost prediction model.</p>
+        </div>
+
+        <div class="feature-box">
+            <h3>🔄 Real-Time Simulation</h3>
+            <p>Live countdown with continuous circular traffic signal rotation.</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        © 2026 Intelligent Traffic Management System | Designed for Smart Cities
+    </div>
+
+</div>
+
+</body>
+</html>

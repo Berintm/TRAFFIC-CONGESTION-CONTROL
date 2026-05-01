@@ -1,0 +1,10 @@
+venv/
+Lib/
+Scripts/
+site-packages/
+Traffic-main/traffic/
+*.pkl
+*.dll
+*.exe
+*.weights
+__pycache__/

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Smart 4-Junction Simulation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+
+body{
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:white;
+    min-height:100vh;
+}
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 40px;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(10px);
+}
+
+.navbar h2{
+    font-weight:600;
+}
+
+.nav-buttons a{
+    padding:8px 16px;
+    border-radius:20px;
+    text-decoration:none;
+    margin-left:10px;
+    background:#4facfe;
+    color:white;
+    transition:0.3s;
+}
+
+.nav-buttons a:hover{
+    background:#00f2fe;
+}
+
+.container{
+    text-align:center;
+    padding:40px;
+}
+
+.signals{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+
+.card{
+    width:260px;
+    margin:20px;
+    padding:25px;
+    border-radius:20px;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(15px);
+    box-shadow:0 10px 25px rgba(0,0,0,0.4);
+    transition:0.3s;
+}
+
+.card.active{
+    transform:scale(1.08);
+    border:2px solid #00f2fe;
+}
+
+.light{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    margin:10px auto;
+    background:#333;
+}
+
+.red.active{background:red;}
+.yellow.active{background:yellow;}
+.green.active{background:lime;}
+
+.timer{
+    font-size:24px;
+    font-weight:600;
+}
+
+.phase{
+    font-size:14px;
+    font-weight:600;
+}
+</style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <h2>🚦 Intelligent Traffic Simulation</h2>
+    <div class="nav-buttons">
+        <a href="/dashboard">⬅ Dashboard</a>
+        <a href="/home">🏠 Home</a>
+        <a href="/reset">🔄 Reset</a>
+    </div>
+</div>
+
+<div class="container">
+<h1>4-Junction Adaptive Traffic Control</h1>
+<div class="signals" id="signals"></div>
+</div>
+
+<script>
+
+let sequence = [];
+let yellowTime = 5;
+let currentIndex = 0;
+
+fetch('/api/signal_sequence')
+.then(res => res.json())
+.then(data => {
+    sequence = data.sequence;
+    yellowTime = data.yellow_time;
+    createSignals();
+    startCycle();
+});
+
+function createSignals(){
+    const container = document.getElementById("signals");
+    container.innerHTML = "";
+
+    sequence.forEach((j,i)=>{
+        container.innerHTML += `
+        <div class="card" id="card${i}">
+            <h3>${j.junction}</h3>
+            <p>Congestion: <b>${j.label}</b></p>
+            <p>Vehicles: <b>${j.total}</b></p>
+            <p>Green Time: <b>${j.green_time}s</b></p>
+
+            <div class="light red" id="red${i}"></div>
+            <div class="light yellow" id="yellow${i}"></div>
+            <div class="light green" id="green${i}"></div>
+
+            <div class="timer" id="timer${i}">0</div>
+            <div class="phase" id="phase${i}">WAITING</div>
+        </div>
+        `;
+    });
+}
+
+function resetLights(){
+    sequence.forEach((_,i)=>{
+        document.getElementById(`card${i}`).classList.remove("active");
+        document.getElementById(`red${i}`).classList.remove("active");
+        document.getElementById(`yellow${i}`).classList.remove("active");
+        document.getElementById(`green${i}`).classList.remove("active");
+    });
+}
+
+function updateRedTimers(activeIndex, activeTime){
+    sequence.forEach((_,i)=>{
+        if(i !== activeIndex){
+            document.getElementById(`red${i}`).classList.add("active");
+            document.getElementById(`phase${i}`).innerText="RED";
+            document.getElementById(`timer${i}`).innerText=activeTime;
+        }
+    });
+}
+
+function startCycle(){
+
+    resetLights();
+
+    let active = sequence[currentIndex];
+    let greenTime = active.green_time;
+
+    let greenLight = document.getElementById(`green${currentIndex}`);
+    let yellowLight = document.getElementById(`yellow${currentIndex}`);
+    let redLight = document.getElementById(`red${currentIndex}`);
+    let timer = document.getElementById(`timer${currentIndex}`);
+    let phase = document.getElementById(`phase${currentIndex}`);
+    let card = document.getElementById(`card${currentIndex}`);
+
+    card.classList.add("active");
+
+    // GREEN
+    greenLight.classList.add("active");
+    phase.innerText="GREEN";
+    let count = greenTime;
+    timer.innerText=count;
+
+    updateRedTimers(currentIndex,count);
+
+    let greenInterval=setInterval(()=>{
+        count--;
+        timer.innerText=count;
+        updateRedTimers(currentIndex,count);
+
+        if(count<=0){
+            clearInterval(greenInterval);
+            greenLight.classList.remove("active");
+
+            // YELLOW
+            yellowLight.classList.add("active");
+            phase.innerText="YELLOW";
+
+            let yellowCount=yellowTime;
+            timer.innerText=yellowCount;
+            updateRedTimers(currentIndex,yellowCount);
+
+            let yellowInterval=setInterval(()=>{
+                yellowCount--;
+                timer.innerText=yellowCount;
+                updateRedTimers(currentIndex,yellowCount);
+
+                if(yellowCount<=0){
+                    clearInterval(yellowInterval);
+                    yellowLight.classList.remove("active");
+
+                    redLight.classList.add("active");
+                    phase.innerText="RED";
+                    timer.innerText="0";
+
+                    currentIndex++;
+                    if(currentIndex>=sequence.length){
+                        currentIndex=0;
+                    }
+
+                    setTimeout(startCycle,1000);
+                }
+
+            },1000);
+        }
+
+    },1000);
+}
+
+</script>
+
+</body>
+</html>

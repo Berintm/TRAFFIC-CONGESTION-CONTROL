@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Congestion Dashboard | AI Traffic System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins',sans-serif;
+        }
+
+        body{
+            background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+            color:white;
+            min-height:100vh;
+        }
+
+        .navbar{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:20px 40px;
+            background:rgba(255,255,255,0.05);
+            backdrop-filter:blur(10px);
+        }
+
+        .container{
+            padding:40px;
+            text-align:center;
+        }
+
+        h1{
+            margin-bottom:10px;
+        }
+
+        .subtitle{
+            opacity:0.8;
+            margin-bottom:40px;
+        }
+
+        .cards{
+            display:flex;
+            justify-content:center;
+            flex-wrap:wrap;
+        }
+
+        .card{
+            width:260px;
+            margin:20px;
+            padding:25px;
+            border-radius:20px;
+            background:rgba(255,255,255,0.08);
+            backdrop-filter:blur(15px);
+            box-shadow:0 10px 25px rgba(0,0,0,0.4);
+            transition:0.4s;
+        }
+
+        .card:hover{
+            transform:translateY(-8px);
+            background:rgba(255,255,255,0.12);
+        }
+
+        .card h3{
+            margin-bottom:10px;
+            color:#4facfe;
+        }
+
+        .metric{
+            font-size:14px;
+            margin:5px 0;
+        }
+
+        .priority{
+            font-weight:600;
+            margin-top:10px;
+            color:#00f2fe;
+        }
+
+        .chart-container{
+            width:80%;
+            max-width:700px;
+            margin:40px auto;
+            background:rgba(255,255,255,0.08);
+            padding:20px;
+            border-radius:20px;
+            backdrop-filter:blur(10px);
+        }
+
+        .summary{
+            margin-top:20px;
+            font-size:16px;
+            font-weight:500;
+        }
+
+        .countdown{
+            margin-top:20px;
+            font-size:18px;
+            color:#00f2fe;
+        }
+
+        @media(max-width:768px){
+            .card{width:90%;}
+            .chart-container{width:95%;}
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <h2>🚦 Real-Time Congestion Dashboard</h2>
+</div>
+
+<div class="container">
+
+    <h1>Prediction Results</h1>
+    <div class="subtitle">
+        Adaptive Timing & Priority-Based Smart Signal Allocation
+    </div>
+
+    <div class="cards">
+
+        {% for j in data %}
+        <div class="card">
+            <h3>{{ j.junction }}</h3>
+            <div class="metric">🚗 Total Vehicles: <b>{{ j.total }}</b></div>
+            <div class="metric">📊 Congestion: <b>{{ j.label }}</b></div>
+            <div class="metric">⏱ Green Time: <b>{{ j.green_time }} sec</b></div>
+            <div class="priority">
+                Priority Rank: {{ loop.index }}
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <!-- Chart Section -->
+    <div class="chart-container">
+        <canvas id="trafficChart"></canvas>
+    </div>
+
+    <div class="summary">
+        Highest Congestion: <b>{{ data[0].junction }}</b> ({{ data[0].label }})
+    </div>
+
+    <div class="countdown">
+        Simulation starts in <span id="timer">5</span> seconds...
+    </div>
+
+</div>
+
+<script>
+
+    // Chart Data
+    const labels = [
+        {% for j in data %}
+            "{{ j.junction }}",
+        {% endfor %}
+    ];
+
+    const vehicleData = [
+        {% for j in data %}
+            {{ j.total }},
+        {% endfor %}
+    ];
+
+    const greenTimes = [
+        {% for j in data %}
+            {{ j.green_time }},
+        {% endfor %}
+    ];
+
+    const ctx = document.getElementById('trafficChart').getContext('2d');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Total Vehicles',
+                    data: vehicleData,
+                    backgroundColor: '#4facfe'
+                },
+                {
+                    label: 'Green Time (sec)',
+                    data: greenTimes,
+                    backgroundColor: '#00f2fe'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { labels: { color: "white" } }
+            },
+            scales: {
+                x: { ticks: { color: "white" } },
+                y: { ticks: { color: "white" } }
+            }
+        }
+    });
+
+    // Auto Redirect Countdown
+    let timeLeft = 5;
+    const timerElement = document.getElementById("timer");
+
+    const countdown = setInterval(() => {
+        timeLeft--;
+        timerElement.innerText = timeLeft;
+
+        if(timeLeft <= 0){
+            clearInterval(countdown);
+            window.location.href = "/simulation";
+        }
+    }, 1000);
+
+</script>
+
+</body>
+</html>
