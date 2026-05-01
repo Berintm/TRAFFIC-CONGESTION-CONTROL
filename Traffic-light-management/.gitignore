@@ -8,3 +8,13 @@ Traffic-main/traffic/
 *.exe
 *.weights
 __pycache__/
+venv/
+Lib/
+Scripts/
+site-packages/
+__pycache__/
+*.pyc
+*.pkl
+*.dll
+*.exe
+*.weights
